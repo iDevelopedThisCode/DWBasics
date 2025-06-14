@@ -1,0 +1,26 @@
+%dw 2.0
+var inPut = [
+  {
+    "number": 11111111,
+    "type": "Phone"
+  },
+  {
+    "number": 222222222,
+    "type": "Mobile Phone"
+  }
+]
+fun onlineLogic(inp) = {
+  (inp map ((item, index) -> {
+    (item.'type'): item.number
+  }))
+}
+fun myLogic(inp) = {(payload map ({($."type"): $.number}))}
+
+fun usingReduce(inp) = payload reduce ((item, accmulator = {}) -> accmulator ++ (item.'type') : (item.number))
+output application/json  
+---
+{
+    "Logic in Mule Docs without Reduce function": onlineLogic(inPut),
+    "My Logic": myLogic(inPut),
+    "Logic in Mule Docs with Reduce function": usingReduce(inPut)
+}
